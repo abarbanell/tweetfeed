@@ -49,18 +49,18 @@ object Main {
     topCounts60.foreachRDD(rdd => {
       val topList = rdd.take(10).toList
       val r = topList.map{case (count, tag) => s"$tag: $count"}
-      println(r)
+      println(s"Top 60 Hashtags: $r ")
     })
 
     twitterStream .window(Seconds(30), Seconds(30))
         .foreachRDD(rdd => {
-          println("---------")
+          println("---- Top 100 Tweets -----")
           rdd.take(100).map(s => {
             val sender = s.getUser.getScreenName
             val text = s.getText
             println(s"@$sender tweeted: $text")
           })
-          println("---------")
+          println("-------------------------")
         })
 //      . filter{ s =>
 //        s.getGeoLocation() != null
