@@ -34,7 +34,7 @@ object Main {
     val conf = new SparkConf().setAppName("TweetFeed").setMaster("local[2]")
     val ssc = new StreamingContext(conf,Seconds(5))
 
-    val filters = Array("spark", "scala", "arduino", "nodejs")
+    val filters = Array("spark", "scala", "arduino", "nodejs", "raspberry")
 
     val twitterStream = TwitterUtils.createStream(ssc, None,  filters)
 
@@ -52,7 +52,7 @@ object Main {
       println(r)
     })
 
-    twitterStream .window(Seconds(15), Seconds(15))
+    twitterStream .window(Seconds(30), Seconds(30))
         .foreachRDD(rdd => {
           rdd.take(100).map(s => {
             val sender = s.getUser.getScreenName
